@@ -1,0 +1,152 @@
+%! Suppress = FileNotFound
+\newpage
+\section{Results}\label{sec:results}
+
+\subsection{Experiment setup}\label{subsec:experiment-setup}
+
+There are some hyperparameters that needed to be set in order to have good results from the algorithms.
+The first is the Time Horizon, which is the number of potential customer we have, in the given analysed time period.
+For the stationary case, we have decided to use a time horizon of 3000 samples, which, assuming we have around 200 potential
+customers a day, is equal to 15 days. It has also proven to be enough time to reach close to the optimum value.
+
+For the non-stationary case we have set a time horizon of 6000 samples, it is longer because we are assuming that
+the phases are different and we need to have enough sample in each phase to make the algorithm reach the optimum.
+Furthermore for the non-stationary case we also need to set the length of the sliding window. We have set the sliding window to
+1500 samples in our experiment. In general it must be enough longer to make the algorithm learn the curve. If, as in our case, the
+phases has a more or less predefined length as for the seasons, that length is a good choice for the window.
+These values have proven to be more than enough to have good performance with the algorithms.
+These values however are not 100\% in line with reality, as we have stated that the real time horizon is a year.
+However if we were to assume to have a time horizon of a year with 200 samples a day, the execution of the algorithms would
+take too much time, so we have chosen to go with the time horizon of 6000 samples regardless, by assuming a smaller time horizon,
+but by chooding a more appropriate sliding window, the results can be generilizied easily for a more realistic time horizon.
+
+
+For the contextual case, we had to set a parameter to decide when to go from using the aggregate curve to using the
+disaggregate curves. The condition used is based on the Hoeffding lower bound, and it checks whether the mean of the mean
+of the best arms for each of the disaggregate curves is higher than the mean of the best arm of the aggregate curve.
+Note that the mean for the disaggregate curves could have been a weighted average if the probability for each context was different.
+Refer to section 3.1 for a more detailed explanation.
+
+Another important parameter is the number of arms we use. The more arms we have the more accurate will be the optimum value,
+but the algorithms have a temporal complexity that increases linearly with the number of arms, so we need to take it into account.
+At the end we decide to use 8 arms for every algorithm. In fact, with less arms sometimes we don't have arms near to the optimum
+of the curves, while with more arms the algorithm doesn't improve so much and the running time is slightly higher.
+
+Finally, we had to set the number of times each experiment would be executed.
+This is of crucial importance in decreasing the noise of the results, but at the same time, it significantly increases
+the computational cost of the execution. After having experimented some values, we verify that any value below 50 still had some
+sort of noise, and any value above 300 increased the running time of the algorithm too much.
+We therefore decided to set it at 100.
+
+We have chosen, as stated before, three different parking lots to run the experiment on.
+Furthermore we divided the time period into four different phases, which we chose to be the different seasons of the year,
+as they have a big impact on the number on people going to the different parkings.
+Below we show the conversion rates used.
+\begin{figure}[H]
+	\includegraphics[scale=0.8]{conv}
+\end{figure}
+
+The demand curves used have been chosen at random, but considering that they should be monotonically decreasing, as in the real case.
+In general, winter is not a good time for parkings in Milan, as most people prefer to stay home due to the cold. In fact, in this season
+people are less willing to pay more for a parking.
+Spring is a great season all around, it brings some big events in Rho Fiera, Porta Garibaldi is crowded most of the time,
+and Città Studi is always full of students preparing exams.
+Summer is somewhat different. It's the season when most people decide to actually leave Milan and go enjoy the warm weather
+somewhere else.
+Some events still happen in Rho Fiera, and Porta Garibaldi is crowded with tourists and people that want to enjoy their
+time in Milan. Città Studi however is empty because the university is closed.
+Autumn has less people going out as the weather starts getting cold again.
+Not many events in Rho Fiera and Porta Garibaldi starts being less appealing. As for Città Studi, autumn is the same as Spring.
+
+
+
+
+\subsection{Demand curves}\label{subsec:demand-curves}
+
+\subsubsection{Rho Fiera}
+
+\begin{figure}[H]
+	\includegraphics[scale=0.25]{rho_demand}
+\end{figure}
+
+\subsubsection{Porta Garibaldi}
+
+\begin{figure}[H]
+	\includegraphics[scale=0.25]{pg_demand}
+\end{figure}
+
+\subsubsection{Città Studi}
+
+\begin{figure}[H]
+	\includegraphics[scale=0.25]{cs_demand}
+\end{figure}
+
+\newpage
+\subsection{Results}\label{subsec:results}
+
+In this section we are going to plot the results we have obtained from running our algorithms in all the
+possible cases. In particular we report the reward and the regret obtained by each of them. These are two very well-knowed
+metrics for comparing Bandits algorithm, since they highlight the time for the algorithm to get the optimum, as well as
+the amount of regret we got before the algorithm finds the optimum price.
+For the contextual case we report only the regret curves, since we were not able to run the algorithms for enough experiments
+to have a plot of the reward without noise. This cases are computationally inefficient and for a more realistic results
+they should be run on a more powerfull machine.
+
+\subsubsection{Stationary}
+
+In the stationary case, results are as expected. AB testing performs the worst of all the learning algorithms.
+While Thompson sampling performs considerably better than UCB1, and converges a lot faster.
+For this case we also show the reward and demand curve and the mean value of each arm. As we expect they are very accurate
+for the best arms, while less accurate for the worste ones.
+
+\begin{figure}[H]
+	\includegraphics[scale=0.25]{ab}
+	\caption{AB Testing}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[scale=0.25]{stationary}
+	\caption{Bandit stationary case}
+\end{figure}
+
+\newpage
+\subsubsection{Non stationary}
+
+In the non-stationary case, we can see that in the first phase the non-stationary algorithm performs as the stationary.
+From the second phase on, the non-stationary algorithms don't suffer a big regret since they forget old samples.
+Even in this case the Thompson Sampling outperforms the UCB1, as we expect.
+
+\begin{figure}[H]
+	\includegraphics[scale=0.8]{ns}
+	\caption{Bandit non-stationary case}
+\end{figure}
+
+\newpage
+\subsubsection{Contextual stationary}
+
+In the contextual case we have some interesting unexpected results. The aggregate and disaggregate algorithms outperforms the contextual algorithm for
+the UCB algorithm, while in the Thompson Sampling case the disaggregate one is almost the same as the contextual.
+The curves selected for this test are those of the second phase for each context and they are very similar. In fact we should
+select curves more idfferent to have better result, but we want our experiment to be as close as possible to the reality and so we
+chose a phase at random. For the other phases the results are also similar.
+
+\begin{figure}[H]
+	\includegraphics[scale=0.8]{ctx}
+	\caption{Contextual bandit stationary case}
+\end{figure}
+
+\newpage
+\subsubsection{Contextual non stationary}
+
+The contextual non stationary case is the most complex of them all, but the result are consinstent with what we expected this time.
+The algorithms seem to not have been able to reach the convergence within the time horizon, hence the regret is still increasing.
+A solution to this would to simply have more samples within each of the phases, in order to reach the optimal value before
+the phase switches. Once again we see that Thompson Sampling outperfoms UCB1.
+The result also shows that the non contextual one at the end outperforms the aggregate and disaggregate algorithms, this is
+because at the beginning of each phase it starts by considering every sample, but after some time steps it uses the contextual
+information to decide the price, obtaining at the end of the phase an higher cumulative reward with respect the others two.
+
+\begin{figure}[H]
+	\includegraphics[scale=0.8]{ctx-ns}
+	\caption{Contextual Bandit non-stationary case}
+\end{figure}

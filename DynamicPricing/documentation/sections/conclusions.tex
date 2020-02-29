@@ -1,0 +1,24 @@
+\newpage
+\section{Conclusions}\label{sec:conclusions}
+
+This research project has the objective to analyze how various algorithms perform in the decision of the pricing
+per hour in a parking in Milan applied to the Bandit settings. We have considered different scenarios, by taking into
+account different context for which the price could differ, and also different phases during the year in which the demand
+curves are different.
+
+In conclusion we can say that there is much to be gained from using Bandit algorithms to solve the dynamic pricing problem.
+Even in a scenario in which one may not think to apply such 'complex' algorithms, such as for a parking lots, we can see
+huge decreases in regret (or profit) from the performance of such algorithms in our simulated environment.
+
+We are satisfied about the results, since they show in almost every case a good behaviour even if our problem has been never
+applied in the Bandit framework. The most critical one is the contextual case, in which we show that the contextual algorithm
+is not capable to beat the others. We suggest to increase the number of context, by considering more parkings in different areas
+and increase the number of sample. Another idea could be increase the number of features of each context. In fact, in our settings
+we only have considered one feature, that is the location of the parkings.
+We can also say, that the optimal algorithm to choose is the Thompson Sampling, as it has outperformed all the others
+in every single scenario.
+
+We can conclude that an increase in the number of samples, even at the increased cost of computational power,
+may prove to be useful in order to further decrease the regret, given that in our problem the data are easy to collect.
+We also suggest that for a true test this algorithm should be tried for a period in a real parking, or at least they
+should be tested with real data.

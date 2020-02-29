@@ -1,0 +1,67 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+
+% hyperref
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref}  % PDF hyperlinks, with coloured links
+\hypersetup{linkcolor=black, citecolor=black, filecolor=black, urlcolor=black} % black links, for printed output
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{ltablex}
+\graphicspath{ {img/} }
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings,xcolor}
+\usepackage{makecell}
+\usepackage{hyperref}
+
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{array}
+\usepackage{pdfpages}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{amsmath}
+
+\begin{document}
+
+\lstset{
+	string=[s]{"}{"},
+	stringstyle=\color{blue},
+	comment=[l]{:},
+	commentstyle=\color{black},
+}
+
+\title{Data Intelligence Application\\ \vspace{1em}  {\textbf{Dynamic Pricing for a Parking System}} \\ 
+	\vspace{1.5em}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.4]{Logo-PoliMi}
+\end{figure}
+}
+\author{ Scotti Andrea \\ Paci Marco\\ Dello Preite Castro Gianmarco \\ Valladares Stefano}
+
+\date{April 9, 2019}
+
+\maketitle
+
+\newpage
+\tableofcontents
+
+\newpage
+\input{sections/abstract}
+\input{sections/problem_contextualization}
+\input{sections/algorithm_description}
+\input{sections/contexts}
+\input{sections/code_structure}
+\input{sections/results}
+\input{sections/conclusions}
+
+
+
+
+
+\newpage
+\appendix
+\end{document}

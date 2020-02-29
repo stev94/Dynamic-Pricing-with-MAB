@@ -1,0 +1,26 @@
+\newpage
+\section{Contexts}\label{sec:contexts}
+
+The whole project is further divided into 2 other sections. These 2 sections however apply the same algorithms, aside from the AB testing, as that is a very different algorithm that operates in a very different way (fixed number of samples).
+This division is based on context identification.
+It is important to point out that context identification is not mutually exclusive with stationarity, meaning that overall our project is divided into 4 sections. Stationary and non-stationary without context identification, and stationary and non-stationary with context identification. 
+
+The context in our problem are the different parkings. In fact we notice that the area in which the parking is located affects the type of users that use it and this leads to have different demand curves, one for each area. To take into account also this we have decide to use the Contextual Bandit framework, applied in the simplest scenario where only one feature is defined, the location of the parking. For this reason we use different learners for different contexts, each one will learn the best curve for its context.
+
+This approach is possible only because we have only one feature, but it's not scalable even when the different case for one feature grows too much. Still in our case it's the most simple and effective.
+
+\subsection{Splitting condition}\label{subsec:splitting-condition}
+Since at the beginning of the experiment we have just a few observations per context, the learners will perform poorly and will take longer to converge, so we decide to use at the beginning one more learner that learns the aggregate demand curve. In this way we start by following the aggregate demand curve, taking into account each user from each parking. When the splitting condition is met, the algorithms will follow the disaggregate curves by considering the context of the user, in our case the area of the parking from which the observation arrived. This will happen soon or later since normally the profit we can gain by disaggregating the demand curves will be higher if the features we have selected has some correlation with the price the users are willing to pay. In out case it has.
+
+The splitting condition is based on the Hoeffding lower bound on the expected reward of the best arm. In particular the algorithm will start to follow the disaggregate curves when the following condition is true:
+\begin{gather*}
+    p_{c1} * LB_{c1} + p_{c2} * LB_{c2} + p_{c3} * LB_{c3} >= LB_{c0}\\
+    LB_{ci} = x_{ci} - \sqrt{\frac{\log{\delta}}{2 * |Z|}}\\
+\end{gather*}
+where $p_{ci}$ is the probability of context i to occur, $LB_{ci}$ is the lower bound on the best expected reward for context i, c0 is the learner that learns the aggregate demand curve, $x_{ci}$ is the expected reward of the best arm for that context, $\delta$ is the confidence of the bound and Z the set of data. We decide to use a uniform probability since each parking we have selected can occur with the same probability and we also put $\delta = t^{-4}$ since is the most common confidence for this type of problems.
+
+\subsection{Non stationary case}\label{subsec:non-stationary-case2}
+In the non stationary contextual case we have that for each context the demand curve is different in different phases of the time horizon. Basically we assume that we have three contexts and each context is divided in 4 phases. The implementation is straightforward because is almost the same that the stationary case, but here the different learners for the disaggregate demand curves as well as the one that follows the aggregate demand curve will be of the non stationary type.
+
+In this case, the algorithm at the beginning of each phase will start by following the aggregate learner, and then it will split to the disaggregates by following the same condition as the stationary case, but once for each phase. Since we don't know the true length of the phase, we decides to use the length of the window size as phase length.
+

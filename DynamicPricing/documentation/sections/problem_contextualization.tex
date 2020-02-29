@@ -1,0 +1,42 @@
+\newpage
+\section{Problem contextualization}\label{sec:problem-contextualization}
+\subsection{Use case example}\label{subsec:use-case-example}
+
+
+
+A driver is looking for a park and decides to look for it in the private parking of Milano Porta Garibaldi.
+When the car is at the entrance, the server will run the algorithms to choose the price per hour for the driver.
+The selection of the price will take into account the context of the user, that is the chosen parking, and the phase of the year.
+The price is shown to them and they decide if to accept the price and park there or to refuse it and go away.
+Finally his decision is sent back to the server in order to update the current state of the algorithms.
+
+
+\subsection{Classes of users and Phases}\label{subsec:classes-of-users-and-phases}
+
+As stated previously, the users are divided into 3 classes based on the parking lot they chose to use.
+This is the simplest and most effective way to identify users based on their features, as other features,
+like for example value of their car, age, income, etc. would be difficult to analize in our scenario.
+If our system were to be used online, like for example through a mobile application, this would change,
+but for now we decided to focus on having the customers buy the parking tickets only at the parking lot.
+
+For each of the parking lots, we have defined a list of four phases through which the parking lots go through.
+The phases are all regarding the season, and are cyclical.
+Each phase has a different impact on each of the parkings, as they are situated in very different locations,
+with different demands throught the year.
+
+
+\begin{itemize}
+	\item Contexts
+	\begin{itemize}
+		\item Porta Garibaldi
+		\item Rho Fiera Milano
+		\item Città Studi
+	\end{itemize}
+	\item Phases
+	\begin{itemize}
+		\item Winter
+		\item Spring
+		\item Summer
+		\item Autumn
+	\end{itemize}
+\end{itemize}
